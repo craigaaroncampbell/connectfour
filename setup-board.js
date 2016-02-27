@@ -24,33 +24,47 @@ for (var i = 0; i < 42; i++) {
   $('#board').append('<div  id="' + spotId + '" class="spot"><div id="' + circleID + '" class=" circle col' + col + ' row' + row +  '"></div></div>');
 }
 
+var color;
+var marker;
+var clicks = 0;
+
 $('.circle').on('click', function(){
   var colNum = Number($(this).attr('class').slice(11, 12));
   var rowNum = Number($(this).attr('class').slice(16, 17));
-
-  //if a column is not full
+  var k = colNum;
   if (boardArr[0][colNum] === '-') {
-    var k = colNum;
-   function addToBoardArr(){
-      if (boardArr[1][colNum] === 'R') boardArr[0][colNum] = 'R';
-      if (boardArr[2][colNum] === 'R') boardArr[1][colNum] = 'R';
-      if (boardArr[3][colNum] === 'R') boardArr[2][colNum] = 'R';
-      if (boardArr[4][colNum] === 'R') boardArr[3][colNum] = 'R';
-      if (boardArr[5][colNum] === 'R') boardArr[4][colNum] = 'R';
-      if (boardArr[5][colNum] === '-') boardArr[5][colNum] = 'R';
+    clicks++;
+    if (clicks % 2 === 0) {
+    color = 'red';
+    marker = 'R'
+    console.log(marker)
+  } else {
+    color = 'blue'
+    marker = 'B'
+    console.log(marker)
+  }
+
+    function addToBoardArr(){
+      if (boardArr[1][colNum] === 'R' || boardArr[1][colNum] === 'B') return boardArr[0][colNum] = marker;
+      if (boardArr[2][colNum] === 'R' || boardArr[2][colNum] === 'B') return boardArr[1][colNum] = marker;
+      if (boardArr[3][colNum] === 'R' || boardArr[3][colNum] === 'B') return boardArr[2][colNum] = marker;
+      if (boardArr[4][colNum] === 'R' || boardArr[4][colNum] === 'B') return boardArr[3][colNum] = marker;
+      if (boardArr[5][colNum] === 'R' || boardArr[5][colNum] === 'B') return boardArr[4][colNum] = marker;
+      if (boardArr[5][colNum] === '-') return boardArr[5][colNum] = marker;
     }
+
     function nextCircle(){
       setTimeout(function(){
-        $('#circle' + k).css('background-color', 'red');
+        $('#circle' + k).css('background-color', color);
         if (k > 6) {
           $('#circle' + (k - 7)).removeAttr('style');
         }
 
         k += 7;
 
-        if (k - 7 === 0 && $('#circle' + k).prop('style')[0] === "background-color" ){
-          console.log("shit")
-          $('#circle' + k-7).css('background-color', 'red');
+        if (k - 7 < 7 && $('#circle' + k).prop('style')[0] === "background-color" ){
+
+          $('#circle' + k-7).css('background-color', color);
           addToBoardArr();
         }
         else {
@@ -59,7 +73,7 @@ $('.circle').on('click', function(){
             if (k + 7 < 42 ) {
               if ($('#circle' + (k + 7)).prop('style')[0] === "background-color" ) {
                 nextFilled = true;
-                $('#circle' + k).css('background-color', 'red');
+                $('#circle' + k).css('background-color', color);
                 $('#circle' + (k - 7)).removeAttr('style');
                 addToBoardArr();
               }
