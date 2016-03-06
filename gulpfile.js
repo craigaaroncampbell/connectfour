@@ -4,11 +4,11 @@ var maps = require('gulp-sourcemaps');
 var minifyCss = require('gulp-minify-css');
 
 gulp.task('sass:dev', function() {
-  gulp.src('./*.scss') // pick your OWN path here
+  gulp.src('./*.scss')
   .pipe(maps.init())
   .pipe(sass().on('error', sass.logError))
   .pipe(minifyCss())
-  .pipe(maps.write('./')) // NOT ./build!
+  .pipe(maps.write('./'))
   .pipe(gulp.dest('./build'));
 });
 
